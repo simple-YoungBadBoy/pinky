@@ -395,4 +395,15 @@ var catalog = []*agent{
 		skills:  sharedSkills,
 		restart: RestartSession,
 	},
+	{
+		id: "deepseek-harness", name: fixed("DeepSeek Harness"), url: "https://github.com/deepseek-ai/deepseek-harness",
+		found: func(e *Env) bool {
+			return dshCLI.find(e) != "" || exists(dshHome(e))
+		},
+		// dsh has no command for MCP servers: Pinky changes its patch layer
+		// itself, so there is no cli here, only the command in found.
+		places:  one(dshPatch, dshStore{}),
+		skills:  dshSkills,
+		restart: RestartApp,
+	},
 }

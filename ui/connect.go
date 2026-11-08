@@ -435,6 +435,8 @@ func agentColor(id string) string {
 		return "#4285f4"
 	case "copilot":
 		return "#24292f"
+	case "deepseek-harness":
+		return "#4d6bfe"
 	}
 	return "#5450d6"
 }
