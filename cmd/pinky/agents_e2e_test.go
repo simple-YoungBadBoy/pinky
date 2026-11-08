@@ -69,8 +69,11 @@ func TestAgentSetupInTheApp(t *testing.T) {
 		}
 	}
 	backend := newFakeBackend(t)
+	// DSH_HOME would otherwise point at a DeepSeek Harness in the person's
+	// home, which the app would offer to connect.
 	app := startApp(t, bin, home, backend.URL, filepath.Join(home, "opened.txt"),
-		"HOME="+userHome, agents.PathEnv+"="+fakeBin, "MYGO_LOCALE=en")
+		"HOME="+userHome, "DSH_HOME="+filepath.Join(userHome, ".dsh"),
+		agents.PathEnv+"="+fakeBin, "MYGO_LOCALE=en")
 	win := app.window(t)
 
 	// With no agent connected, the sidebar's card names the ones found,
@@ -146,7 +149,8 @@ func TestAgentSetupInTheApp(t *testing.T) {
 	run(t, bin, home, "quit")
 	app.wait(t)
 	app = startApp(t, bin, home, backend.URL, filepath.Join(home, "opened.txt"),
-		"HOME="+userHome, agents.PathEnv+"="+fakeBin, "MYGO_LOCALE=en")
+		"HOME="+userHome, "DSH_HOME="+filepath.Join(userHome, ".dsh"),
+		agents.PathEnv+"="+fakeBin, "MYGO_LOCALE=en")
 	win = app.window(t)
 	app.waitText(t, win, "Pixel 9 (fake)")
 	time.Sleep(time.Second) // the agents are read off the main thread
